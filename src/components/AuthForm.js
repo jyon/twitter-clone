@@ -22,10 +22,8 @@ const AuthForm = () => {
     try {
       if (newAccout) {
         const data = await authService.createUserWithEmailAndPassword(email, password);
-        console.log(data);
       } else {
         const data = await authService.signInWithEmailAndPassword(email, password);
-        console.log(data);
       }
     } catch (e) {
       setError(e.message);

@@ -15,7 +15,6 @@ const Profile = ( { userObj }) => {
       .where("creatorId", "==", userObj.uid)
       .orderBy("createdAt", "desc")
       .get();
-    console.log(tweets.docs.map(doc => doc.data()));
   }
 
   useEffect(() => {
