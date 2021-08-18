@@ -1,12 +1,33 @@
-import { authService } from "fbase";
-import React from "react";
+import { authService, dbService } from "fbase";
+import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
-const Profile = () => {
-  const onLogOutClick = () => authService.signOut();
+const Profile = ( { userObj }) => {
+  const history = useHistory();
+  const onLogOutClick = () => {
+    authService.signOut();
+    history.push("/");
+  };
+
+  const getMyTweets = async () => {
+    const tweets = await dbService
+      .collection("tweets")
+      .where("creatorId", "==", userObj.uid)
+      .orderBy("createdAt", "desc")
+      .get();
+    console.log(tweets.docs.map(doc => doc.data()));
+  }
+
+  useEffect(() => {
+    getMyTweets();
+  }, []);
+
   return (
-    <>
-      <button onClick={onLogOutClick}>Log Out</button>
-    </>
+    <div className="container">
+      <span className="formBtn cancelBtn logOut" onClick={onLogOutClick}>
+        Log Out
+      </span>
+    </div>
   );
 }
 export default Profile;
